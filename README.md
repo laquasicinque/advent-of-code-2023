@@ -6,6 +6,6 @@ Writing these in TS, for Deno
 
 Nothing fancy, to run day 1 do:
 ```sh
-deno run --allow-read=. days/01/index.ts
+bun days/01/index.ts
 ```
 Extrapolate for other days
