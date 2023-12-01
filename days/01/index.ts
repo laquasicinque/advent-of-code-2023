@@ -1,7 +1,7 @@
-import { getInputLines } from '../_utils/input';
-import { map } from '../_utils/map';
-import { pipe } from '../_utils/pipe';
-import { sum } from '../_utils/sum';
+import { getInputLines } from '@utils/input';
+import { map } from '@utils/map';
+import { pipe } from '@utils/pipe';
+import { sum } from '@utils/sum';
 
 const numbers = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 const numJoined = numbers.join('|')
