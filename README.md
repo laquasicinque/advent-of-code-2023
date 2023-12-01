@@ -1,6 +1,6 @@
 # Advent of Code 2022
 
-Writing these in TS, for Deno
+Writing these in TS, for Bun
 
 ## Running
 
