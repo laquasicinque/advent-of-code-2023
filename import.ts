@@ -1,6 +1,6 @@
 // import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
-import {mkdir} from 'node:fs/promises'
-import {JSDOM} from 'jsdom'
+import { mkdir } from 'node:fs/promises'
+import { JSDOM } from 'jsdom'
 const YEAR = 2023
 const day = String(Bun.argv[2] ?? new Date().getDate());
 
@@ -27,13 +27,15 @@ await Bun.write(
   encoder.encode(instructions)
 );
 try {
-  await Bun.write(
-    `days/${day.padStart(2, "0")}/index.ts`,
-    `import { getInput } from '../_utils/input.ts';
-const input = getInput()
-  `
-  );
-} catch {}
+  if (!await Bun.file(`days/${day.padStart(2, "0")}/index.ts`).exists()) {
+    await Bun.write(
+      `days/${day.padStart(2, "0")}/index.ts`,
+      `import { getInput } from '../_utils/input.ts';
+      const input = getInput()
+      `
+    );
+  }
+} catch { }
 
 console.log(`Files written`);
 
@@ -82,8 +84,8 @@ async function getInstructions() {
               el.tagName === "CODE"
                 ? `\`${el.textContent}\``
                 : el.tagName === "EM"
-                ? `*${item.textContent}*`
-                : el
+                  ? `*${item.textContent}*`
+                  : el
             );
           });
           nodes.push(cp.textContent);
