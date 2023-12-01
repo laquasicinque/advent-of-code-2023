@@ -1,7 +1,7 @@
 function* _map<T, U>(
   iter: Iterable<T>,
   fn: (item: T, index: number, iter: Iterable<T>) => U
-) {
+): IterableIterator<U> {
   let i = 0;
   for (const item of iter) {
     yield fn(item, i++, iter);
@@ -10,7 +10,7 @@ function* _map<T, U>(
 
 export const map =
   <T, U>(fn: (item: T, index: number, iter: Iterable<T>) => U) =>
-  (iter: Iterable<T>) =>
-    _map(iter, fn);
+    (iter: Iterable<T>) =>
+      _map(iter, fn);
 
 map._ = _map

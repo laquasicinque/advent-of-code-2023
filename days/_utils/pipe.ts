@@ -1,4 +1,4 @@
-import { apply, InOut, InOutWindow } from "./apply.ts";
+import { apply, InOut, InOutWindow } from "./apply";
 
 export function pipe<T0, T1>(...fns: InOutWindow<[T0, T1]>): InOut<T0, T1>;
 export function pipe<T0, T1, T2>(

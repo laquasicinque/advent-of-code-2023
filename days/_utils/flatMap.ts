@@ -1,6 +1,6 @@
-import { apply } from "./apply.ts";
-import { flat } from "./flat.ts";
-import { map } from "./map.ts";
+import { apply } from "./apply";
+import { flat } from "./flat";
+import { map } from "./map";
 
 export const _flatMap = <T, U>(
   iter: Iterable<T>,
@@ -11,7 +11,7 @@ export const _flatMap = <T, U>(
 
 export const flatMap =
   <T, U>(fn: (item: T, index: number, iter: Iterable<T>) => U | Iterable<U>) =>
-  (iter: Iterable<T>) =>
-    _flatMap(iter, fn);
+    (iter: Iterable<T>) =>
+      _flatMap(iter, fn);
 
 flatMap._ = _flatMap

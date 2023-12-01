@@ -2,6 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "types": ["bun-types"]
+    "types": ["bun-types"],
+    "paths": {
+      "@utils/*": ["./days/_utils/*"],
+    }
   }
 }

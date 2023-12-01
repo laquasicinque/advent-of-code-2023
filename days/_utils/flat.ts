@@ -1,4 +1,4 @@
-import { isIterable } from "./isIterable.ts";
+import { isIterable } from "./isIterable";
 
 function* _flat<T, U = T>(
   iter: Iterable<T> | Iterable<Iterable<T>>,
@@ -15,7 +15,7 @@ function* _flat<T, U = T>(
 
 export const flat =
   (depth: number) =>
-  <T, U = T>(iter: Iterable<T>) =>
-    _flat(iter, depth) as U;
+    <T, U = T>(iter: Iterable<T>) =>
+      _flat(iter, depth) as U;
 
 flat._ = _flat;
