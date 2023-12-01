@@ -31,8 +31,8 @@ try {
     await Bun.write(
       `days/${day.padStart(2, "0")}/index.ts`,
       `import { getInput } from '../_utils/input.ts';
-      const input = getInput()
-      `
+const input = getInput()
+`
     );
   }
 } catch { }
