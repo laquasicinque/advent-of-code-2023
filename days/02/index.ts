@@ -2,6 +2,7 @@ import { filter } from '@utils/filter';
 import { getInput, getInputLinesArray } from '@utils/input';
 import { map } from '@utils/map';
 import { pipe } from '@utils/pipe';
+import { pluck } from '@utils/pluck';
 import { product } from '@utils/product';
 import { sum } from '@utils/sum';
 const input = getInputLinesArray()
@@ -10,24 +11,28 @@ const colorMatch = /(?<count>\d+) (?<color>\w+)/g
 
 const extractData = (str: string) => {
   const { groups: { id, sets } } = str.match(/^Game (?<id>\d+): (?<sets>.+)$/i)
-  return { id: Number(id), sets: sets.split(';') }
+  return {
+    id, sets: sets.split(';').map(set => {
+      const counts = { red: 0, green: 0, blue: 0 }
+      for (const { groups: { count, color } } of set.matchAll(colorMatch)) {
+        counts[color] += Number(count)
+      }
+      return counts
+    })
+  }
 }
 
 const p1 = pipe(
   map(extractData),
   filter(({ sets }) => {
     for (const group of sets) {
-      const counts = { red: 0, green: 0, blue: 0 }
-      for (const { groups: { color, count } } of group.matchAll(colorMatch)) {
-        counts[color] += Number(count)
-      }
-      if (counts.red > 12 || counts.green > 13 || counts.blue > 14) {
+      if (group.red > 12 || group.green > 13 || group.blue > 14) {
         return false
       }
     }
     return true
   }),
-  map(({ id }) => id),
+  pluck('id'),
   sum
 )
 const p2 = pipe(
@@ -35,9 +40,7 @@ const p2 = pipe(
   map(({ sets }) => {
     const counts = { red: 0, green: 0, blue: 0 }
     for (const group of sets) {
-      for (const { groups: { color, count } } of group.matchAll(colorMatch)) {
-        counts[color] = Math.max(Number(count), counts[color])
-      }
+      Object.entries(group).forEach(([key, value]) => counts[key] = Math.max(counts[key], value))
     }
     return product(Object.values(counts))
   }),
