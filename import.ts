@@ -3,39 +3,41 @@ import { mkdir } from 'node:fs/promises'
 import { JSDOM } from 'jsdom'
 const YEAR = 2023
 const day = String(Bun.argv[2] ?? new Date().getDate());
+const dayPadded = day.padStart(2, "0")
 
 console.log(`Importing day ${day}.`);
-const [instructions, input] = await Promise.all([
+const [{ instructions, examples }, input] = await Promise.all([
   getInstructions(),
   getInput(),
 ]);
 
 try {
-  await mkdir(`days/${day.padStart(2, "0")}/`, { recursive: true });
+  await mkdir(`days/${dayPadded}/`, { recursive: true });
 } catch (e) {
   console.log(e);
 }
 
 const encoder = new TextEncoder();
-
 await Bun.write(
-  `days/${day.padStart(2, "0")}/data.txt`,
+  `days/${dayPadded}/data.txt`,
   encoder.encode(input)
 );
 await Bun.write(
-  `days/${day.padStart(2, "0")}/README.md`,
+  `days/${dayPadded}/README.md`,
   encoder.encode(instructions)
 );
 try {
-  if (!await Bun.file(`days/${day.padStart(2, "0")}/index.ts`).exists()) {
+  if (!await Bun.file(`days/${dayPadded}/index.ts`).exists()) {
     await Bun.write(
-      `days/${day.padStart(2, "0")}/index.ts`,
-      `import { getInput } from '../_utils/input.ts';
+      `days/${dayPadded}/index.ts`,
+      `import { getInput } from '@utils/input.ts';
 const input = getInput()
 `
     );
   }
 } catch { }
+
+await Promise.all(examples.map((example, idx) => Bun.write(`days/${dayPadded}/ex${idx + 1}.txt`, example)))
 
 console.log(`Files written`);
 
@@ -60,6 +62,7 @@ async function getInstructions() {
   const dom = new JSDOM(data);
   const doc = dom.window.document
   const nodes = [];
+  const exampleCases = new Set<string>()
   for (const node of doc?.querySelectorAll("article > *") || []) {
     switch ((node as Element).tagName) {
       case "H2":
@@ -67,6 +70,7 @@ async function getInstructions() {
         break;
       case "PRE":
         nodes.push(`\`\`\`\n${node.textContent}\n\`\`\``);
+        exampleCases.add(node.textContent)
         break;
       case "UL":
         nodes.push(
@@ -95,5 +99,5 @@ async function getInstructions() {
         console.log((node as Element).tagName, "Not supported");
     }
   }
-  return nodes.join("\n\n");
+  return { instructions: nodes.join("\n\n"), examples: [...exampleCases] };
 }
