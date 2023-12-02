@@ -25,8 +25,8 @@ const extractData = (str: string) => {
 const p1 = pipe(
   map(extractData),
   filter(({ sets }) => {
-    for (const group of sets) {
-      if (group.red > 12 || group.green > 13 || group.blue > 14) {
+    for (const { red, green, blue } of sets) {
+      if (red > 12 || green > 13 || blue > 14) {
         return false
       }
     }
