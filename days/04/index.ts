@@ -16,21 +16,22 @@ const getCardData = (str: string) => {
   }
 }
 
+const getWinningGames = pipe(map(getCardData), filter(({ matches }) => matches))
+
 const p1 = pipe(
-  map(getCardData),
-  filter(({ matches }) => matches),
+  getWinningGames,
   map(({ matches }) => 2 ** (matches - 1)),
   sum
 )
 
 const p2 = (input) => {
-  const cardInstances = Object.fromEntries(Array.from(input, (_, i) => [i + 1, 1]))
-  for (const { card, matches } of input.map(getCardData).filter(({ matches }) => matches)) {
+  const instances = Object.fromEntries(input.map((_, i) => [i + 1, 1]))
+  for (const { card, matches } of getWinningGames(input)) {
     for (let i = 1; i <= matches; i++) {
-      cardInstances[card + i] += cardInstances[card]
+      instances[card + i] += instances[card]
     }
   }
-  return sum(Object.values(cardInstances))
+  return sum(Object.values(instances))
 }
 
 console.log(p1(input))
