@@ -23,17 +23,15 @@ const p1 = pipe(
   sum
 )
 
-const p2 = () => {
+const p2 = (input) => {
   const cardInstances = Object.fromEntries(Array.from(input, (_, i) => [i + 1, 1]))
   for (const { card, matches } of input.map(getCardData).filter(({ matches }) => matches)) {
-    for (let times = 0; times < cardInstances[card]; times++) {
-      for (let i = 1; i <= matches; i++) {
-        cardInstances[card + i] = cardInstances[card + i] ? cardInstances[card + i] + 1 : 2
-      }
+    for (let i = 1; i <= matches; i++) {
+      cardInstances[card + i] += cardInstances[card]
     }
   }
   return sum(Object.values(cardInstances))
 }
 
 console.log(p1(input))
-console.log(p2())
+console.log(p2(input))
