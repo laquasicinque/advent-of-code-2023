@@ -1,20 +1,12 @@
-import { apply } from '@utils/apply';
-import { count } from '@utils/count';
-import { filter } from '@utils/filter';
 import { getInputLinesArray } from '@utils/input';
 import { map } from '@utils/map';
 import { pipe } from '@utils/pipe';
 import { product } from '@utils/product';
-import { range } from '@utils/range';
 import { zip } from '@utils/zip';
 const input = getInputLinesArray()
+const { ceil } = Math
 
-const numberOfFasterTimes = ([t, record]: Iterable<number>) => 2 * apply(
-  range(1, t / 2),
-  filter((x) => x * (t - x) > record),
-  count
-) + ~-(t % 2)
-
+const numberOfFasterTimes = ([t, r]: Iterable<number>) => ceil((-t + (t ** 2 - 4 * r) ** .5) / 2) - ceil((-t - (t ** 2 - 4 * r) ** .5) / 2)
 const p1 = pipe(
   map<string, number[]>(x => x.match(/\d+/g).map(Number)),
   ([...x]) => zip(x as [number[], number[]]),
