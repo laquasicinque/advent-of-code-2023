@@ -30,7 +30,7 @@ try {
   if (!await Bun.file(`days/${dayPadded}/index.ts`).exists()) {
     await Bun.write(
       `days/${dayPadded}/index.ts`,
-      `import { getInput } from '@utils/input.ts';
+      `import { getInput } from '@utils/input';
 const input = getInput()
 `
     );
