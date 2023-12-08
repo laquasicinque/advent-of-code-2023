@@ -34,12 +34,12 @@ const p1 = (input) => {
 }
 const p2 = (input) => {
   const { cmd, map: data } = getData(input)
-  let vals = Object.keys(data).filter((x) => x.at(-1) === 'A').map((x) => x)
+  const initialValues = Object.keys(data).filter((x) => x.at(-1) === 'A').map((x) => x)
   return apply(
-    vals,
-    map(x => 1 + apply(
+    initialValues,
+    map(value => 1 + apply(
       cycle(cmd),
-      scan([x], (state, item) => {
+      scan([value], (state, item) => {
         const next = data[state.shift()][item === 'L' ? 0 : 1]
         state.push(next)
         return next
